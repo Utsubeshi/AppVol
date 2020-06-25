@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_ofertas_frag">
+
+    <fragment
+        android:id="@+id/nav_detalle_oferta_frag"
+        android:name="com.example.appvol.fragment.DetalleOfertaFragment"
+        android:label="fragment_detalle_oferta"
+        tools:layout="@layout/fragment_detalle_oferta" />
+    <fragment
+        android:id="@+id/nav_editar_perfil_frag"
+        android:name="com.example.appvol.fragment.EditarPerfilFragment"
+        android:label="fragment_editar_perfil"
+        tools:layout="@layout/fragment_editar_perfil" />
+    <fragment
+        android:id="@+id/nav_ofertas_frag"
+        android:name="com.example.appvol.fragment.OfertasFragment"
+        android:label="fragment_ofertas"
+        tools:layout="@layout/fragment_ofertas" />
+</navigation>
