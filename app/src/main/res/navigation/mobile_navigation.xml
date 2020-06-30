@@ -6,10 +6,10 @@
     app:startDestination="@id/nav_ofertas_frag">
 
     <fragment
-        android:id="@+id/nav_detalle_oferta_frag"
-        android:name="com.example.appvol.fragment.DetalleOfertaFragment"
+        android:id="@+id/nav_ver_mis_vol_frag"
+        android:name="com.example.appvol.fragment.HistorialFragment"
         android:label="fragment_detalle_oferta"
-        tools:layout="@layout/fragment_detalle_oferta" />
+        tools:layout="@layout/fragment_historial" />
     <fragment
         android:id="@+id/nav_editar_perfil_frag"
         android:name="com.example.appvol.fragment.EditarPerfilFragment"
@@ -19,5 +19,19 @@
         android:id="@+id/nav_ofertas_frag"
         android:name="com.example.appvol.fragment.OfertasFragment"
         android:label="fragment_ofertas"
-        tools:layout="@layout/fragment_ofertas" />
+        tools:layout="@layout/fragment_ofertas" >
+        <action
+            android:id="@+id/action_nav_ofertas_frag_to_nav_ver_oferta"
+            app:destination="@id/nav_ver_oferta" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_ver_oferta"
+        android:name="com.example.appvol.fragment.VerOfertaFragment"
+        android:label="fragment_ver_oferta"
+        tools:layout="@layout/fragment_ver_oferta" >
+        <argument
+            android:name="oferta"
+            app:argType="com.example.appvol.model.Oferta"
+            app:nullable="true" />
+    </fragment>
 </navigation>
