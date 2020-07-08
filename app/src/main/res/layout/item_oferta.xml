@@ -2,18 +2,23 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contenedor_oferta"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/item_background"
     android:orientation="horizontal"
-    android:id="@+id/contenedor_oferta"
     android:padding="10dp">
 
     <TextView
         android:id="@+id/tv_listado_titulo_oferta"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:text="Título"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/iv_listado_imagen_oferta"
@@ -21,8 +26,8 @@
 
     <ImageView
         android:id="@+id/iv_listado_imagen_oferta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="140dp"
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,28 +36,41 @@
         android:id="@+id/tv_listado_fecha_oferta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="TextView"
+        android:layout_marginTop="10dp"
+        android:text="fecha"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/tv_listado_titulo_oferta"
         app:layout_constraintTop_toBottomOf="@+id/tv_listado_titulo_oferta" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tv_listado_estado_oferta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:text="TextView"
+        android:text="estado"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
-        android:id="@+id/tv_listado_tipo_oferta"
+        android:id="@+id/tv_listado_ubicación_oferta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:layout_marginTop="10dp"
+        android:text="ubicación"
+        android:textStyle="bold|italic"
         app:layout_constraintStart_toStartOf="@+id/tv_listado_fecha_oferta"
         app:layout_constraintTop_toBottomOf="@+id/tv_listado_fecha_oferta" />
+
+    <TextView
+        android:id="@+id/tv_listado_organizacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:text="organización"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_listado_imagen_oferta"
+        app:layout_constraintStart_toEndOf="@+id/iv_listado_imagen_oferta" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

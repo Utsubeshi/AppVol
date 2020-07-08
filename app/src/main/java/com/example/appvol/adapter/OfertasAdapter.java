@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.appvol.R;
 import com.example.appvol.fragment.OfertasFragmentDirections;
 import com.example.appvol.model.Oferta;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -42,6 +43,12 @@ public class OfertasAdapter extends RecyclerView.Adapter<OfertasAdapter.ViewHold
         holder.tvTitulo.setText(oferta.getTitulo());
         holder.tvTipo.setText(oferta.getTipo());
         holder.tvFecha.setText(oferta.getFecha());
+        holder.tvOrganizacion.setText(oferta.getOrganizacion());
+        String estado = "no disponible";
+        if (oferta.isEstado()){
+            estado = "activo";
+        }
+        holder.tvEstado.setText(estado);
         holder.contenedor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,6 +56,7 @@ public class OfertasAdapter extends RecyclerView.Adapter<OfertasAdapter.ViewHold
                 findNavController(v).navigate(action);
             }
         });
+        Picasso.get().load(oferta.getUrlImagen()).into(holder.ivOferta);
     }
 
     @Override
@@ -65,7 +73,7 @@ public class OfertasAdapter extends RecyclerView.Adapter<OfertasAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivOferta;
-        TextView tvTitulo, tvFecha, tvTipo;
+        TextView tvTitulo, tvFecha, tvTipo, tvEstado, tvOrganizacion ;
         ConstraintLayout contenedor;
 
         public ViewHolder(@NonNull View itemView) {
@@ -73,7 +81,9 @@ public class OfertasAdapter extends RecyclerView.Adapter<OfertasAdapter.ViewHold
             ivOferta = itemView.findViewById(R.id.iv_listado_imagen_oferta);
             tvTitulo = itemView.findViewById(R.id.tv_listado_titulo_oferta);
             tvFecha = itemView.findViewById(R.id.tv_listado_fecha_oferta);
-            tvTipo = itemView.findViewById(R.id.tv_listado_tipo_oferta);
+            tvTipo = itemView.findViewById(R.id.tv_listado_ubicación_oferta);
+            tvEstado = itemView.findViewById(R.id.tv_listado_estado_oferta);
+            tvOrganizacion = itemView.findViewById(R.id.tv_listado_organizacion);
             contenedor = itemView.findViewById(R.id.contenedor_oferta);
 
         }

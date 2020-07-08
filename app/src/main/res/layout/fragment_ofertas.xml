@@ -4,16 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/holo_red_dark"
     tools:context=".fragment.OfertasFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/rv_listado_ofertas">
-
     </androidx.recyclerview.widget.RecyclerView>
-
-
-
 </LinearLayout>

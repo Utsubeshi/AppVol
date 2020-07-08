@@ -8,18 +8,22 @@
     <fragment
         android:id="@+id/nav_ver_mis_vol_frag"
         android:name="com.example.appvol.fragment.HistorialFragment"
-        android:label="fragment_detalle_oferta"
+        android:label="Mis postulaciones"
         tools:layout="@layout/fragment_historial" />
     <fragment
         android:id="@+id/nav_editar_perfil_frag"
         android:name="com.example.appvol.fragment.EditarPerfilFragment"
-        android:label="fragment_editar_perfil"
-        tools:layout="@layout/fragment_editar_perfil" />
+        android:label="Usuario"
+        tools:layout="@layout/fragment_editar_perfil">
+        <action
+            android:id="@+id/action_nav_editar_perfil_frag_to_nav_ofertas_frag"
+            app:destination="@id/nav_ofertas_frag" />
+    </fragment>
     <fragment
         android:id="@+id/nav_ofertas_frag"
         android:name="com.example.appvol.fragment.OfertasFragment"
-        android:label="fragment_ofertas"
-        tools:layout="@layout/fragment_ofertas" >
+        android:label="Ofertas de voluntariado"
+        tools:layout="@layout/fragment_ofertas">
         <action
             android:id="@+id/action_nav_ofertas_frag_to_nav_ver_oferta"
             app:destination="@id/nav_ver_oferta" />
@@ -27,11 +31,14 @@
     <fragment
         android:id="@+id/nav_ver_oferta"
         android:name="com.example.appvol.fragment.VerOfertaFragment"
-        android:label="fragment_ver_oferta"
-        tools:layout="@layout/fragment_ver_oferta" >
+        android:label="Detalles de la oferta"
+        tools:layout="@layout/fragment_ver_oferta">
         <argument
             android:name="oferta"
             app:argType="com.example.appvol.model.Oferta"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_nav_ver_oferta_to_nav_ofertas_frag"
+            app:destination="@id/nav_ofertas_frag" />
     </fragment>
 </navigation>

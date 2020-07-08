@@ -3,34 +3,51 @@ package com.example.appvol.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.firestore.Exclude;
+
 public class Oferta implements Parcelable {
 
+    private String id;
     private String titulo;
     private String detalle;
     private String fecha;
     private String ubicacion;
     private String tipo;
     private String urlImagen;
+    private String organizacion;
+    private String tiempoMin;
     private boolean estado;
+    private int cantidadMin;
 
-    public Oferta(String titulo, String detalle, String fecha, String ubicacion, String tipo, String urlImagen, boolean estado) {
+
+    public Oferta(){}
+
+    public Oferta( String titulo, String detalle, String fecha, String ubicacion, String tipo, String urlImagen, String organizacion, String tiempoMin, boolean estado, int cantidadMin) {
+
         this.titulo = titulo;
         this.detalle = detalle;
         this.fecha = fecha;
         this.ubicacion = ubicacion;
         this.tipo = tipo;
         this.urlImagen = urlImagen;
+        this.organizacion = organizacion;
+        this.tiempoMin = tiempoMin;
         this.estado = estado;
+        this.cantidadMin = cantidadMin;
     }
 
     protected Oferta(Parcel in) {
+        id = in.readString();
         titulo = in.readString();
         detalle = in.readString();
         fecha = in.readString();
         ubicacion = in.readString();
         tipo = in.readString();
         urlImagen = in.readString();
+        organizacion = in.readString();
+        tiempoMin = in.readString();
         estado = in.readByte() != 0;
+        cantidadMin = in.readInt();
     }
 
     public static final Creator<Oferta> CREATOR = new Creator<Oferta>() {
@@ -45,12 +62,13 @@ public class Oferta implements Parcelable {
         }
     };
 
-    public String getUrlImagen() {
-        return urlImagen;
+    @Exclude
+    public String getId() {
+        return id;
     }
 
-    public void setUrlImagen(String urlImagen) {
-        this.urlImagen = urlImagen;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitulo() {
@@ -93,12 +111,44 @@ public class Oferta implements Parcelable {
         this.tipo = tipo;
     }
 
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
+    }
+
+    public String getOrganizacion() {
+        return organizacion;
+    }
+
+    public void setOrganizacion(String organizacion) {
+        this.organizacion = organizacion;
+    }
+
+    public String getTiempoMin() {
+        return tiempoMin;
+    }
+
+    public void setTiempoMin(String tiempoMin) {
+        this.tiempoMin = tiempoMin;
+    }
+
     public boolean isEstado() {
         return estado;
     }
 
     public void setEstado(boolean estado) {
         this.estado = estado;
+    }
+
+    public int getCantidadMin() {
+        return cantidadMin;
+    }
+
+    public void setCantidadMin(int cantidadMin) {
+        this.cantidadMin = cantidadMin;
     }
 
     @Override
@@ -108,12 +158,16 @@ public class Oferta implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(titulo);
         dest.writeString(detalle);
         dest.writeString(fecha);
         dest.writeString(ubicacion);
         dest.writeString(tipo);
         dest.writeString(urlImagen);
+        dest.writeString(organizacion);
+        dest.writeString(tiempoMin);
         dest.writeByte((byte) (estado ? 1 : 0));
+        dest.writeInt(cantidadMin);
     }
 }

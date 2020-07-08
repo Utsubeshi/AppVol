@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_log_in" >
         <action
             android:id="@+id/action_logInFragment_to_registroFragment"
-            app:destination="@id/registroFragment" />
+            app:destination="@id/nav_registro_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/registroFragment"
+        android:id="@+id/nav_registro_fragment"
         android:name="com.example.appvol.fragment.RegistroFragment"
         android:label="fragment_registro"
         tools:layout="@layout/fragment_registro" />
