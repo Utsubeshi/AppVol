@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,11 +22,17 @@ import android.widget.Toast;
 
 import com.example.appvol.LoginActivity;
 import com.example.appvol.MainActivity;
+import com.example.appvol.OrganizacionActivity;
 import com.example.appvol.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LogInFragment extends Fragment {
 
@@ -34,6 +41,9 @@ public class LogInFragment extends Fragment {
     private ProgressBar progressBar;
     private Button btnSignup, btnLogin, btnReset;
     NavController navController;
+    private CheckBox checkBoxOrg;
+    private FirebaseFirestore FireStore = FirebaseFirestore.getInstance();
+    private CollectionReference org = FireStore.collection("Organizaciones");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,7 +55,6 @@ public class LogInFragment extends Fragment {
         // Si la instancia es distinta de null
         if (auth.getCurrentUser() != null) {
             startActivity(new Intent(getContext(), MainActivity.class));
-
         }
         // Obtener la referencia de los controles
         inputEmail = view.findViewById(R.id.email);
@@ -54,6 +63,7 @@ public class LogInFragment extends Fragment {
         btnSignup = view.findViewById(R.id.btn_signup);
         btnLogin = view.findViewById(R.id.btn_login);
         btnReset = view.findViewById(R.id.btn_reset_password);
+        checkBoxOrg = view.findViewById(R.id.chkBoxOrg);
         // Obtener instancia de autenticación de Firebase
         auth = FirebaseAuth.getInstance();
         // Clic del botón registrar en la aplicación
@@ -92,21 +102,8 @@ public class LogInFragment extends Fragment {
                 }
                 // ProgressBar visible
                 progressBar.setVisibility(View.VISIBLE);
-                // Autenticar usuario existe
-                auth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()){
-                                    Intent intent = new Intent(getContext(), MainActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    Toast.makeText(getContext(), "asdff", Toast.LENGTH_SHORT).show();
-                                    progressBar.setVisibility(View.GONE);
-                                }
-
-                            }
-                        });
+                // Autenticar si el usuario existe
+                autenticarUser(email,password);
                 }
         });
         return view;
@@ -116,6 +113,43 @@ public class LogInFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
+    }
+
+    public void autenticarUser(String email, String password){
+        auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+//                            if (checkBoxOrg.isChecked()){
+//                                String orgID = auth.getCurrentUser().getUid();
+//                                org.document(orgID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                                    @Override
+//                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                                        //validar si es una org
+//                                        if (documentSnapshot.contains("rol")) {
+//                                            Intent intent = new Intent(getContext(), OrganizacionActivity.class);
+//                                            startActivity(intent);
+//                                        } else {
+//                                            //si no es org pero igual esta registrado
+//                                            Toast.makeText(getContext(), "No es una organizacion", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(getContext(), MainActivity.class);
+                                            startActivity(intent);
+                                            progressBar.setVisibility(View.GONE);
+                                        //}
+ //                                   }
+ //                               });
+//                            } else {
+//                                //Usuario voluntario
+//                                Intent intent = new Intent(getContext(), MainActivity.class);
+//                                startActivity(intent);
+//                            }
+                        } else {
+                            Toast.makeText(getContext(), "No esta registrado", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }
+                });
     }
 
 }

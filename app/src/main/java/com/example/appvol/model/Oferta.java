@@ -3,6 +3,7 @@ package com.example.appvol.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
 public class Oferta implements Parcelable {
@@ -62,7 +63,7 @@ public class Oferta implements Parcelable {
         }
     };
 
-    @Exclude
+    @DocumentId
     public String getId() {
         return id;
     }

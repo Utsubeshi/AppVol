@@ -32,10 +32,7 @@ public class RegistroFragment extends Fragment {
 
     private TextInputLayout etNOmbre, etApellido, etEmail, etPass, etPass2;
     private Button btnRegistro;
-
     private FirebaseAuth firebaseAuth;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,44 +59,62 @@ public class RegistroFragment extends Fragment {
             }
         });
 
-
-
     }
 
-    public void registrarUser (){
-        //Data
-
-
+    public void registrarUser (){ //Data
         final String nombre = etNOmbre.getEditText().getText().toString();
         final String apellidos = etApellido.getEditText().getText().toString();
         String email = etEmail.getEditText().getText().toString();
         String pass = etPass.getEditText().getText().toString();
         String pass2 = etPass2.getEditText().getText().toString();
 
-
-        firebaseAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        firebaseAuth.createUserWithEmailAndPassword(email, pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+            public void onSuccess(AuthResult authResult) {
                     Map<String, Object> voluntario = new HashMap<>();
                     voluntario.put("nombre",nombre);
                     voluntario.put("apellidos", apellidos);
-                    Toast.makeText(getActivity(), "Registro exitoso", Toast.LENGTH_SHORT).show();
                     String idVolutario = firebaseAuth.getCurrentUser().getUid();
                     FirebaseFirestore fStore = FirebaseFirestore.getInstance();
-                    CollectionReference voluntarios = fStore.collection("Voluntarios");
-                    voluntarios.document(idVolutario).set(voluntario).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-
-                        }
-                    });
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getActivity(), "Hubo un error", Toast.LENGTH_SHORT).show();
-                }
+                    fStore.collection("Usuarios")
+                            .document(idVolutario)
+                            .set(voluntario)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(getActivity(),
+                                            "Usuario registrado",
+                                            Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
             }
         });
+
+//        firebaseAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//            @Override
+//            public void onComplete(@NonNull Task<AuthResult> task) {
+//                if(task.isSuccessful()){
+//                    Map<String, Object> voluntario = new HashMap<>();
+//                    voluntario.put("nombre",nombre);
+//                    voluntario.put("apellidos", apellidos);
+//                    Toast.makeText(getActivity(), "Registro exitoso", Toast.LENGTH_SHORT).show();
+//                    String idVolutario = firebaseAuth.getCurrentUser().getUid();
+//                    FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+//                    CollectionReference voluntarios = fStore.collection("Voluntarios");
+//                    voluntarios.document(idVolutario).set(voluntario).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                        @Override
+//                        public void onSuccess(Void aVoid) {
+//
+//                        }
+//                    });
+//                    Intent intent = new Intent(getActivity(), MainActivity.class);
+//                    startActivity(intent);
+//                } else {
+//                    Toast.makeText(getActivity(), "Hubo un error", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
     }
 }

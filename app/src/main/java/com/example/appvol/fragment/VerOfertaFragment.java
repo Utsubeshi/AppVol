@@ -1,5 +1,6 @@
 package com.example.appvol.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.appvol.OrganizacionActivity;
 import com.example.appvol.R;
 import com.example.appvol.model.Oferta;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,7 +29,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
@@ -44,6 +49,7 @@ public class VerOfertaFragment extends Fragment {
     private Oferta oferta;
     private FirebaseFirestore FireStore = FirebaseFirestore.getInstance();
     private CollectionReference ofertas = FireStore.collection("Ofertas");
+    private CollectionReference voluntarios = FireStore.collection("Voluntarios");
     String userid;
 
     @Override
@@ -87,20 +93,35 @@ public class VerOfertaFragment extends Fragment {
             tvUbicacion.setText(oferta.getUbicacion());
             //String url = "https://portal.andina.pe/EDPfotografia3/Thumbnail/2019/06/22/000595226W.jpg";
             Picasso.get().load(oferta.getUrlImagen()).into(ivOfertaImagen);
-            postular();
+            validarPostulacion();
             btnPostular.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    Map<String, Object> postulacion = new HashMap<>();
-                    postulacion.put("voluntario", userid);
-                    ofertas.document(oferta.getId()).collection("Postulantes").document().set(postulacion);
-                    Toast.makeText(getContext(), "Gracias por su postulacion", Toast.LENGTH_SHORT).show();
+                public void onClick(final View v) {
+                    voluntarios.document(userid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                            String nombre = documentSnapshot.getString("nombre");
+                            String apellidos = documentSnapshot.getString("apellidos");
+                            String nombres = nombre + " " + apellidos;
+                            String experiencia = documentSnapshot.getString("experiencia");
+                            String intereses = documentSnapshot.getString("intereses");
+                            Map<String, Object> postulacion = new HashMap<>();
+                            postulacion.put("voluntario", userid);
+                            postulacion.put("nombres", nombres);
+                            postulacion.put("experiencia", experiencia);
+                            postulacion.put("intereses", intereses);
+                            ofertas.document(oferta.getId()).collection("Postulantes").document().set(postulacion);
+                            Toast.makeText(getContext(), "Gracias por su postulacion", Toast.LENGTH_SHORT).show();
+                            Navigation.findNavController(view).navigate(R.id.nav_ofertas_frag);
+                        }
+                    });
                 }
             });
         }
     }
 
-    public void postular(){
+    //si ya esta registrado en esta oferta deshabilita el boton
+    public void validarPostulacion(){
         Task<QuerySnapshot> documentReference = ofertas.document(oferta.getId())
                 .collection("Postulantes")
                 .whereEqualTo("voluntario", userid).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -108,7 +129,6 @@ public class VerOfertaFragment extends Fragment {
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
                            if (documentSnapshot != null){
-
                                btnPostular.setEnabled(false);
                                return;
                            }
